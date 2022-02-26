@@ -1,0 +1,63 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:FileOrganizer.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="500"
+        x:Class="FileOrganizer.Views.MainWindow"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="FileOrganizer"
+        TransparencyLevelHint="Blur"
+        Background="Transparent"
+        ExtendClientAreaToDecorationsHint="True"
+        Width="600"
+        Height="500"
+        CanResize="False">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+    <Panel>
+        <ExperimentalAcrylicBorder IsHitTestVisible="False">
+            <ExperimentalAcrylicBorder.Material>
+                <ExperimentalAcrylicMaterial
+                    BackgroundSource="Digger"
+                    TintColor="DarkGray"
+                    TintOpacity="1"
+                    MaterialOpacity="0.5">
+                </ExperimentalAcrylicMaterial>
+            </ExperimentalAcrylicBorder.Material>
+        </ExperimentalAcrylicBorder>
+        
+        <StackPanel VerticalAlignment="Center"
+               HorizontalAlignment="Center"
+               Spacing="20">
+            <Button Content="Add one!" 
+                    Command="{Binding AddOneCommand}"/>
+            <TextBlock HorizontalAlignment="Center" 
+                       Text="{Binding Count}"/>
+            
+            <WrapPanel>
+                <TextBlock Margin="10" Text="Folder path:"/>
+                <TextBox Width="250"></TextBox>
+            </WrapPanel>
+            
+        </StackPanel>
+        
+        <WrapPanel VerticalAlignment="Bottom"
+                   HorizontalAlignment="Left"
+                   Margin="10">
+            <ProgressBar HorizontalAlignment="Left" Margin="10" Width="400"></ProgressBar>
+            <TextBlock HorizontalAlignment="Right" Text="25%"></TextBlock>
+        </WrapPanel>
+
+        <Panel VerticalAlignment="Bottom"
+               HorizontalAlignment="Right"
+               Margin="10">
+            <Button Content="Organize"></Button>
+        </Panel>
+        
+    </Panel>
+
+</Window>
