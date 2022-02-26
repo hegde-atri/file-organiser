@@ -3,15 +3,15 @@
         xmlns:vm="using:FileOrganizer.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="500"
+        mc:Ignorable="d" d:DesignWidth="700" d:DesignHeight="700"
         x:Class="FileOrganizer.Views.MainWindow"
-        Icon="/Assets/avalonia-logo.ico"
+        Icon="/Assets/main.ico"
         Title="FileOrganizer"
         TransparencyLevelHint="Blur"
         Background="Transparent"
         ExtendClientAreaToDecorationsHint="True"
-        Width="600"
-        Height="500"
+        Width="700"
+        Height="700"
         CanResize="False">
 
     <Design.DataContext>
@@ -23,129 +23,100 @@
             <ExperimentalAcrylicBorder.Material>
                 <ExperimentalAcrylicMaterial
                     BackgroundSource="Digger"
-                    TintColor="DarkGray"
+                    TintColor="black"
                     TintOpacity="1"
                     MaterialOpacity="0.5">
                 </ExperimentalAcrylicMaterial>
             </ExperimentalAcrylicBorder.Material>
         </ExperimentalAcrylicBorder>
         
-        <!--> Top panel <!-->
-        <!-- <Border VerticalAlignment="Top" -->
-        <!--         Height="50" -->
-        <!--         Margin="10" -->
-        <!--         BorderBrush="Black" -->
-        <!--         BorderThickness="1"> -->
-        <!--     <Panel VerticalAlignment="Top"> -->
-        <!--         <StackPanel> -->
-        <!--              -->
-        <!--         </StackPanel> -->
-        <!--     </Panel> -->
-        <!-- </Border> -->
-        <!-- -->
-        <!-- <!@1@ Middle panel <!@1@ -->
-        <!-- <Border VerticalAlignment="Center" -->
-        <!--         Height="400" -->
-        <!--         Margin="10" -->
-        <!--         BorderBrush="Black" -->
-        <!--         BorderThickness="1"> -->
-        <!--     <Panel VerticalAlignment="Top"> -->
-        <!--         <StackPanel> -->
-        <!--             <WrapPanel> -->
-        <!--                 <TextBlock Margin="10" Text="Folder path:"/> -->
-        <!--                 <TextBox Width="450" Text="{Binding Path}"></TextBox> -->
-        <!--             </WrapPanel> -->
-        <!--             <WrapPanel> -->
-        <!--                 <TextBlock Margin="15" Text="Sort by:"></TextBlock> -->
-        <!--                 <ComboBox Margin="10"> -->
-        <!--                     <ComboBoxItem Content="By Month"/> -->
-        <!--                     <ComboBoxItem Content="By Year"/> -->
-        <!--                 </ComboBox> -->
-        <!--             </WrapPanel> -->
-        <!--             <WrapPanel> -->
-        <!--                 <TextBlock Margin="10" Text="File extension to sort:"/> -->
-        <!--                 <TextBox Width="25" Text=""></TextBox> -->
-        <!--             </WrapPanel> -->
-        <!--              -->
-        <!--             <TextBlock HorizontalAlignment="Center" -->
-        <!--                        VerticalAlignment="Center" -->
-        <!--                        Text="{Binding Error}"/> -->
-        <!--         </StackPanel> -->
-        <!--     </Panel> -->
-        <!-- </Border> -->
-        <!-- -->
-        <!-- <!@1@ Bottom panel <!@1@ -->
-        <!-- <Border VerticalAlignment="Bottom" -->
-        <!--         Height="50" -->
-        <!--         Margin="2" -->
-        <!--         BorderBrush="Black" -->
-        <!--         BorderThickness="1"> -->
-        <!--     <Panel VerticalAlignment="Top"> -->
-        <!--         <StackPanel> -->
-        <!--             <WrapPanel VerticalAlignment="Bottom" -->
-        <!--                        HorizontalAlignment="Left"> -->
-        <!--                 <ProgressBar HorizontalAlignment="Left" -->
-        <!--                              Margin="10" Width="400" -->
-        <!--                              Value="{Binding Progress}"></ProgressBar> -->
-        <!--                 <TextBlock Margin="5" Text="{Binding Progress}"></TextBlock> -->
-        <!--                 <Button Content="Organize" HorizontalAlignment="Right" Margin="50 0 0 0 " -->
-        <!--                         Command="{Binding Organize}"></Button> -->
-        <!--             </WrapPanel> -->
-        <!--         </StackPanel> -->
-        <!--     </Panel> -->
-        <!-- </Border> -->
-        
         <StackPanel VerticalAlignment="Top"
-               HorizontalAlignment="Center"
-               Spacing="20"
-               Margin="25">
-            <Button Content="Add one!"
-                    Command="{Binding AddOneCommand}"/>
-            <TextBlock HorizontalAlignment="Center"
-                       Text="{Binding Count}"/>
-            <TextBlock HorizontalAlignment="Center"
-                       Text="{Binding Path}"/>
-        
-            <WrapPanel>
-                <TextBlock Margin="10" Text="Folder path:"/>
-                <TextBox Width="450" Text="{Binding Path}"></TextBox>
+                    Margin="15">
+            <WrapPanel Margin="15">
+                <TextBlock Margin="10"
+                           Text="Source path:" />
+                <TextBox Text="{Binding SourcePath}"
+                         IsEnabled="False"
+                         Margin="5"
+                         HorizontalAlignment="Stretch"/>
             </WrapPanel>
-        
-            <WrapPanel>
-                <TextBlock Margin="15" Text="Sort by:"></TextBlock>
-                <ComboBox Margin="10">
-                    <ComboBoxItem Content="By Month"/>
-                    <ComboBoxItem Content="By Year"/>
+            <Button Command="{Binding SelectSourceFolder}"
+                    HorizontalAlignment="Right"
+                    Content="Select folder" />
+            <WrapPanel Margin="15">
+                <TextBlock Margin="10"
+                           Text="Target path: " />
+                <TextBox Text="{Binding DestPath}"
+                         IsEnabled="False"
+                         Margin="5"
+                         HorizontalAlignment="Stretch"/>
+            </WrapPanel>
+            <Button Command="{Binding SelectDestinationFolder}"
+                    HorizontalAlignment="Right"
+                    Content="Select folder" />
+            
+            <WrapPanel Margin="15">
+                <TextBlock Text="File type: "
+                           Width="75"
+                           Margin="10"/>
+                <TextBox Margin="5"
+                         Text="{Binding FileType}"/>
+                <TextBlock Text="Organize: "
+                           Width="75"
+                           Margin="10"/>
+                <ComboBox Margin="5"
+                          SelectedIndex="{Binding Sort}">
+                    <ComboBoxItem Content="None"/>
+                    <ComboBoxItem Content="By Month" />
+                    <ComboBoxItem Content="By Year" />
                 </ComboBox>
+                <TextBlock Text="Scan subfolders:  "
+                           Width="125"
+                           Margin="10"/>
+                <ComboBox Margin="5"
+                          SelectedIndex="{Binding scanSubFolders}">
+                    <ComboBoxItem Content="Yes"/>
+                    <ComboBoxItem Content="No" />
+                </ComboBox>
+                
             </WrapPanel>
-        
-            <WrapPanel>
-                <TextBlock Margin="10" Text="File extension to sort:"/>
-                <TextBox Width="25" Text=""></TextBox>
+            
+            <WrapPanel Margin="15">
+                <TextBlock Text="Auto detect subfolders in destination:  "
+                           Width="250"
+                           Margin="10"/>
+                <ComboBox Margin="5"
+                          SelectedIndex="{Binding destSubFolders}">
+                    <ComboBoxItem Content="Yes"/>
+                    <ComboBoxItem Content="No" />
+                </ComboBox>
+                <TextBlock>(Creates folder with extension name at destination)</TextBlock>
             </WrapPanel>
-        
-        
-            <TextBlock HorizontalAlignment="Center"
-                       VerticalAlignment="Center"
-                       Text="{Binding Error}"/>
+            
+            <WrapPanel Margin="15">
+                <TextBlock Text="Output: "
+                           Margin="0"/>
+                <TextBox IsEnabled="False">In development!</TextBox>
+                <!-- <ScrollContentPresenter HorizontalAlignment="Stretch" -->
+                <!--               VerticalAlignment="Stretch" Content="f {Binding Output}" CanVerticallyScroll="True"/> -->
+                <!-- <ScrollBar/> -->
+                </WrapPanel>
+            <ScrollViewer HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <TextBox AcceptsReturn="True" IsEnabled="False" Text="{Binding Output}"></TextBox>
+            </ScrollViewer>
         </StackPanel>
-
-        <WrapPanel VerticalAlignment="Bottom"
-                   HorizontalAlignment="Left"
-                   Margin="10">
-            <ProgressBar HorizontalAlignment="Stretch"
-                         Margin="10"
-                         Value="{Binding Progress}"></ProgressBar>
-            <TextBlock HorizontalAlignment="Right" Text="{Binding Progress}"></TextBlock>
-        </WrapPanel>
         
-        
-        <Panel VerticalAlignment="Bottom"
-               HorizontalAlignment="Right"
-               Margin="10">
-            <Button Content="Organize"
-                    Command="{Binding Organize}"></Button>
-        </Panel>
+        <StackPanel VerticalAlignment="Bottom"
+                    Margin="15">
+            <TextBlock HorizontalAlignment="Center"
+                       Text="{Binding Error}"/>
+            <TextBlock HorizontalAlignment="Center"
+                       Text="{Binding Progress}"/>
+            <ProgressBar Value="{Binding Progress}" Margin="10"/>
+            <Button HorizontalAlignment="Center" 
+                    Command="{Binding Organize}"
+                    Content="Organize"/>
+        </StackPanel>
         
     </Panel>
 
