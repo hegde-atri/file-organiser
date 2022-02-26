@@ -112,7 +112,7 @@ namespace FileOrganizer.ViewModels
                 DestPath = (await x.ShowAsync(new MainWindow()))!;
             });
 
-            Organize = ReactiveCommand.Create(async () =>
+            Organize = ReactiveCommand.Create(() =>
             {
                 if (OptionsValid())
                 {
