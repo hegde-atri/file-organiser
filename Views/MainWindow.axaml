@@ -30,32 +30,121 @@
             </ExperimentalAcrylicBorder.Material>
         </ExperimentalAcrylicBorder>
         
-        <StackPanel VerticalAlignment="Center"
+        <!--> Top panel <!-->
+        <!-- <Border VerticalAlignment="Top" -->
+        <!--         Height="50" -->
+        <!--         Margin="10" -->
+        <!--         BorderBrush="Black" -->
+        <!--         BorderThickness="1"> -->
+        <!--     <Panel VerticalAlignment="Top"> -->
+        <!--         <StackPanel> -->
+        <!--              -->
+        <!--         </StackPanel> -->
+        <!--     </Panel> -->
+        <!-- </Border> -->
+        <!-- -->
+        <!-- <!@1@ Middle panel <!@1@ -->
+        <!-- <Border VerticalAlignment="Center" -->
+        <!--         Height="400" -->
+        <!--         Margin="10" -->
+        <!--         BorderBrush="Black" -->
+        <!--         BorderThickness="1"> -->
+        <!--     <Panel VerticalAlignment="Top"> -->
+        <!--         <StackPanel> -->
+        <!--             <WrapPanel> -->
+        <!--                 <TextBlock Margin="10" Text="Folder path:"/> -->
+        <!--                 <TextBox Width="450" Text="{Binding Path}"></TextBox> -->
+        <!--             </WrapPanel> -->
+        <!--             <WrapPanel> -->
+        <!--                 <TextBlock Margin="15" Text="Sort by:"></TextBlock> -->
+        <!--                 <ComboBox Margin="10"> -->
+        <!--                     <ComboBoxItem Content="By Month"/> -->
+        <!--                     <ComboBoxItem Content="By Year"/> -->
+        <!--                 </ComboBox> -->
+        <!--             </WrapPanel> -->
+        <!--             <WrapPanel> -->
+        <!--                 <TextBlock Margin="10" Text="File extension to sort:"/> -->
+        <!--                 <TextBox Width="25" Text=""></TextBox> -->
+        <!--             </WrapPanel> -->
+        <!--              -->
+        <!--             <TextBlock HorizontalAlignment="Center" -->
+        <!--                        VerticalAlignment="Center" -->
+        <!--                        Text="{Binding Error}"/> -->
+        <!--         </StackPanel> -->
+        <!--     </Panel> -->
+        <!-- </Border> -->
+        <!-- -->
+        <!-- <!@1@ Bottom panel <!@1@ -->
+        <!-- <Border VerticalAlignment="Bottom" -->
+        <!--         Height="50" -->
+        <!--         Margin="2" -->
+        <!--         BorderBrush="Black" -->
+        <!--         BorderThickness="1"> -->
+        <!--     <Panel VerticalAlignment="Top"> -->
+        <!--         <StackPanel> -->
+        <!--             <WrapPanel VerticalAlignment="Bottom" -->
+        <!--                        HorizontalAlignment="Left"> -->
+        <!--                 <ProgressBar HorizontalAlignment="Left" -->
+        <!--                              Margin="10" Width="400" -->
+        <!--                              Value="{Binding Progress}"></ProgressBar> -->
+        <!--                 <TextBlock Margin="5" Text="{Binding Progress}"></TextBlock> -->
+        <!--                 <Button Content="Organize" HorizontalAlignment="Right" Margin="50 0 0 0 " -->
+        <!--                         Command="{Binding Organize}"></Button> -->
+        <!--             </WrapPanel> -->
+        <!--         </StackPanel> -->
+        <!--     </Panel> -->
+        <!-- </Border> -->
+        
+        <StackPanel VerticalAlignment="Top"
                HorizontalAlignment="Center"
-               Spacing="20">
-            <Button Content="Add one!" 
+               Spacing="20"
+               Margin="25">
+            <Button Content="Add one!"
                     Command="{Binding AddOneCommand}"/>
-            <TextBlock HorizontalAlignment="Center" 
+            <TextBlock HorizontalAlignment="Center"
                        Text="{Binding Count}"/>
-            
+            <TextBlock HorizontalAlignment="Center"
+                       Text="{Binding Path}"/>
+        
             <WrapPanel>
                 <TextBlock Margin="10" Text="Folder path:"/>
-                <TextBox Width="250"></TextBox>
+                <TextBox Width="450" Text="{Binding Path}"></TextBox>
             </WrapPanel>
-            
-        </StackPanel>
         
+            <WrapPanel>
+                <TextBlock Margin="15" Text="Sort by:"></TextBlock>
+                <ComboBox Margin="10">
+                    <ComboBoxItem Content="By Month"/>
+                    <ComboBoxItem Content="By Year"/>
+                </ComboBox>
+            </WrapPanel>
+        
+            <WrapPanel>
+                <TextBlock Margin="10" Text="File extension to sort:"/>
+                <TextBox Width="25" Text=""></TextBox>
+            </WrapPanel>
+        
+        
+            <TextBlock HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Text="{Binding Error}"/>
+        </StackPanel>
+
         <WrapPanel VerticalAlignment="Bottom"
                    HorizontalAlignment="Left"
                    Margin="10">
-            <ProgressBar HorizontalAlignment="Left" Margin="10" Width="400"></ProgressBar>
-            <TextBlock HorizontalAlignment="Right" Text="25%"></TextBlock>
+            <ProgressBar HorizontalAlignment="Stretch"
+                         Margin="10"
+                         Value="{Binding Progress}"></ProgressBar>
+            <TextBlock HorizontalAlignment="Right" Text="{Binding Progress}"></TextBlock>
         </WrapPanel>
-
+        
+        
         <Panel VerticalAlignment="Bottom"
                HorizontalAlignment="Right"
                Margin="10">
-            <Button Content="Organize"></Button>
+            <Button Content="Organize"
+                    Command="{Binding Organize}"></Button>
         </Panel>
         
     </Panel>
