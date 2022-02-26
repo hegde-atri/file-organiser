@@ -2,7 +2,7 @@
 I made this project that organizes files in a folder based on specified options.
 This was made to organize recovered data from my hard drive. Suitable for photos, videos and word documents.
 
-#How to use
+# How to use
 You can download the application in the [releases page.](https://github.com/hegde-atri/FileOrganizer/releases)
 
 - You select the source and target paths by clicking on the select folder button below their label.
