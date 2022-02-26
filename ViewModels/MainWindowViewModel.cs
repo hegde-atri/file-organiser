@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
@@ -144,8 +145,8 @@ namespace FileOrganizer.ViewModels
 
         private bool IsFileTypeEmpty()
         {
-            if (FileType is string) return true;
-            return false;
+            if (FileType is string || FileType == "") return false;
+            return true;
         }
 
         private void MoveFiles()
@@ -163,19 +164,25 @@ namespace FileOrganizer.ViewModels
 
                 foreach (var fi in fileInfoList)
                 {
-                    // Task<string> task = Task<string>.Factory.StartNew(() =>
-                    // {
-                    //     try
-                    //     {
-                    //         Output += $"{fi.Name}: {fi.CreationTime}, {fi.Length}";
-                    //         // MoveFile(fi);
-                    //     }
-                    //     catch (Exception e)
-                    //     {
-                    //         Error = e.ToString();
-                    //         return "Error" + e.ToString();
-                    //     }
-                    // });
+                    Task<string> task = Task<string>.Factory.StartNew(() =>
+                    {
+                        try
+                        {
+                            Output += $"{fi.Name}: {fi.CreationTime}, {fi.Length}";
+                            MoveFile(fi);
+                            fileCount++;
+                            return "Success!";
+                        }
+                        catch (Exception e)
+                        {
+                            Error = e.ToString();
+                            return "Error" + e.ToString();
+                        }
+                    });
+                    Task updateUI = task.ContinueWith((ret) =>
+                    {
+                        Progress = (fileCount / totalFiles) * 100;
+                    }, TaskScheduler.FromCurrentSynchronizationContext());
                 }
 
             }
@@ -227,30 +234,160 @@ namespace FileOrganizer.ViewModels
             }
         }
 
-        // private void MoveFile(FileInfo fi)
-        // {
-        //     if (IsFileTypeEmpty())
-        //     {
-        //         
-        //     }
-        //     else
-        //     {
-        //         DateTime dt = fi.LastWriteTime;
-        //         if (fi.Extension.ToLower() != FileType.ToLower()) return;
-        //         CultureInfo ci = Thread.CurrentThread.CurrentCulture;
-        //         string month1 = ci.DateTimeFormat.GetMonthName(dt.Month);
-        //         string month2 = ci.DateTimeFormat.GetAbbreviatedMonthName(dt.Month);
-        //         string destinationPath, monthNumber = string.Empty;
-        //
-        //         if (dt.Month > 9) monthNumber = dt.Month.ToString();
-        //         else monthNumber = "0" + dt.Month.ToString();
-        //
-        //         if (subFolder)
-        //         {
-        //             destinationPath = destPath + "/" + 
-        //         }
-        //     }
-        // }
+        private void MoveFile(FileInfo fi)
+        {
+            if (IsFileTypeEmpty())
+            {
+                try
+                {
+                    DateTime dt = fi.LastWriteTime;
+                    CultureInfo ci = Thread.CurrentThread.CurrentCulture;
+                    string month1 = ci.DateTimeFormat.GetMonthName(dt.Month);
+                    string month2 = ci.DateTimeFormat.GetAbbreviatedMonthName(dt.Month);
+                    string destinationPath = string.Empty, monthNumber = string.Empty;
+
+                    if (dt.Month > 9) monthNumber = dt.Month.ToString();
+                    else monthNumber = "0" + dt.Month.ToString();
+
+                    if (Sort == 0)
+                    {
+                        if (DestSubFolders == 0)
+                        {
+                            destinationPath = destPath + "/" + fi.Extension.Substring(1);
+                        }
+                        else if (DestSubFolders == 1)
+                        {
+                            destinationPath = destPath;
+                        }
+                    }
+                    else if (Sort == 1)
+                    {
+                        if (DestSubFolders == 0)
+                        {
+                            destinationPath = destPath + "/" + fi.Extension.Substring(1) + "/" + dt.Year.ToString()
+                                              + "/" + monthNumber + "-" + month2;
+                        }
+                        else if (DestSubFolders == 1)
+                        {
+                            destinationPath = destPath + "/" + dt.Year.ToString()
+                                              + "/" + monthNumber + "-" + month2;
+                        }
+                    }
+                    else if (Sort == 2)
+                    {
+                        if (DestSubFolders == 0)
+                        {
+                            destinationPath = destPath + "/" + fi.Extension.Substring(1) + "/" + dt.Year.ToString();
+                        }
+                        else if (DestSubFolders == 1)
+                        {
+                            destinationPath = destPath + "/" + dt.Year.ToString();
+                        }
+                    }
+
+                    if (!Directory.Exists(destinationPath))
+                    {
+                        Directory.CreateDirectory(destinationPath);
+                    }
+
+                    fi.MoveTo(destinationPath + "/" + fi.Name);
+
+                }
+                catch (Exception e)
+                {
+                    FileStream fs = new FileStream(DestPath + "/" + "Exception.log", FileMode.Append, FileAccess.Write);
+                    StreamWriter sw = new StreamWriter(fs);
+                    sw.AutoFlush = true;                
+                    sw.WriteLine("Failed to copy : " + fi.FullName);
+                    sw.WriteLine(e.Message);
+                    sw.WriteLine(e.StackTrace);
+                    sw.WriteLine(e.Source);
+                    sw.WriteLine("Failed to copy : " + fi.FullName);
+                    if (e.InnerException != null) sw.WriteLine(e.InnerException.Message);
+                    sw.WriteLine("");
+                    sw.Flush();
+                    sw.Close();
+                    fs.Close();
+                }
+                
+            }
+            else
+            {
+                try
+                {
+                    DateTime dt = fi.LastWriteTime;
+                    if (fi.Extension.ToLower() != FileType.ToLower()) return;
+                    CultureInfo ci = Thread.CurrentThread.CurrentCulture;
+                    string month1 = ci.DateTimeFormat.GetMonthName(dt.Month);
+                    string month2 = ci.DateTimeFormat.GetAbbreviatedMonthName(dt.Month);
+                    string destinationPath = string.Empty, monthNumber = string.Empty;
+
+                    if (dt.Month > 9) monthNumber = dt.Month.ToString();
+                    else monthNumber = "0" + dt.Month.ToString();
+
+                    if (Sort == 0)
+                    {
+                        if (DestSubFolders == 0)
+                        {
+                            destinationPath = destPath + "/" + FileType.Substring(1);
+                        }
+                        else if (DestSubFolders == 1)
+                        {
+                            destinationPath = destPath;
+                        }
+                    }
+                    else if (Sort == 1)
+                    {
+                        if (DestSubFolders == 0)
+                        {
+                            destinationPath = destPath + "/" + FileType.Substring(1) + "/" + dt.Year.ToString()
+                                              + "/" + monthNumber + "-" + month2;
+                        }
+                        else if (DestSubFolders == 1)
+                        {
+                            destinationPath = destPath + "/" + dt.Year.ToString()
+                                              + "/" + monthNumber + "-" + month2;
+                        }
+                    }
+                    else if (Sort == 2)
+                    {
+                        if (DestSubFolders == 0)
+                        {
+                            destinationPath = destPath + "/" + FileType.Substring(1) + "/" + dt.Year.ToString();
+                        }
+                        else if (DestSubFolders == 1)
+                        {
+                            destinationPath = destPath + "/" + dt.Year.ToString();
+                        }
+                    }
+
+                    if (!Directory.Exists(destinationPath))
+                    {
+                        Directory.CreateDirectory(destinationPath);
+                    }
+
+                    fi.MoveTo(destinationPath + "/" + fi.Name);
+
+                }
+                catch (Exception e)
+                {
+                    FileStream fs = new FileStream(DestPath + "/" + "Exception.log", FileMode.Append, FileAccess.Write);
+                    StreamWriter sw = new StreamWriter(fs);
+                    sw.AutoFlush = true;                
+                    sw.WriteLine("Failed to copy : " + fi.FullName);
+                    sw.WriteLine(e.Message);
+                    sw.WriteLine(e.StackTrace);
+                    sw.WriteLine(e.Source);
+                    sw.WriteLine("Failed to copy : " + fi.FullName);
+                    if (e.InnerException != null) sw.WriteLine(e.InnerException.Message);
+                    sw.WriteLine("");
+                    sw.Flush();
+                    sw.Close();
+                    fs.Close();
+                }
+                
+            }
+        }
 
     }
 }
