@@ -1,4 +1,9 @@
+[![CodeFactor](https://www.codefactor.io/repository/github/hegde-atri/fileorganizer/badge)](https://www.codefactor.io/repository/github/hegde-atri/fileorganizer)
+
+# ! I plan to re-do this project in rust in the near future !
+
 # File Organizer
+
 I made this project that organizes files in a folder based on specified options.
 This was made to organize recovered data from my hard drive. Suitable for photos, videos and word documents.
 
