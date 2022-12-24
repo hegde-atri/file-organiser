@@ -1,0 +1,7 @@
+#+title: File Organiser
+
+This application is currently being re-written in rust using ~iced-rs~.
+
+If you are looking for the C# version, switch to the old branch.
+
+** Features to add
