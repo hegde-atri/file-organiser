@@ -5,3 +5,5 @@ This application is currently being re-written in rust using ~iced-rs~.
 If you are looking for the C# version, switch to the old branch.
 
 ** Features to add
+- ~./src/lib~ This will house the various methods to sort a given array?
+- ~.src/gui~ This will house all the gui code for iced rs?
